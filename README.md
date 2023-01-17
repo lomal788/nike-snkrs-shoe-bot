@@ -18,4 +18,9 @@
 2. Node.Js ( Express, Telegram API )
 3. Postgresql
 
+## 사진
+![img0.png](https://raw.githubusercontent.com/lomal788/nike-snkrs-shoe-bot/main/img/img0.png)
+![img1.png](https://raw.githubusercontent.com/lomal788/nike-snkrs-shoe-bot/main/img/img1.png)
+
+
 ## Warning - 본 프로그램은 매크로를 이용한 신발 구매,응모를 부추키는 프로그램이 아니며, 해당 프로그램을 사용함으로서 생기는 책임은 모두 이용자 본인에게 있습니다. 또한 나이키 SNKRS 사이트의 개편으로 인해 현재 프로그램을 사용할수없습니다.
