@@ -16,4 +16,4 @@
 ### 기술
 1. Python ( Selenium, Flask )
 2. Node.Js ( Express, Telegram API )
-3. 
+3. Postgresql
