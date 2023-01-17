@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>나이키. Just Do It. Nike.com</title>
+  <meta name="description" content="나이키_홈페이지">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+  rel="stylesheet">
+  <link rel="stylesheet" href="/css/product-card.css">
+  <% include ./head %>
+  <style type="text/css">
+  .feed {
+    display: grid;
+    grid-gap: 25px;
+    gap: 25px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 25px;
+  }
+  @media (max-width: 1250px) {
+    .feed{
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .feed{
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+  }
+  .prodImg .launch-time {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    padding-left: 24px;
+    padding-top: 24px;
+    vertical-align: baseline;
+  }
+  .launch-caption {
+    opacity: 1;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: imageLoadedComplete 0.5s ease-in-out 0s;
+    animation: imageLoadedComplete 0.5s ease-in-out 0s;
+    text-align: center;
+  }
+  .headline-4 {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.2;
+    word-wrap: break-word;
+    word-break: keep-all;
+    white-space: normal;
+    font-family: "Helvetica Neue",Helvetica,"Spoqa Han Sans Neo",Arial,sans-serif;
+    margin: 0;
+  }
+
+  .headline-1 {
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.125;
+    word-wrap: break-word;
+    word-break: keep-all;
+    white-space: normal;
+    font-family: "Helvetica Neue",Helvetica,"Spoqa Han Sans Neo",Arial,sans-serif;
+    margin: 0;
+  }
+</style>
+<script type="text/javascript">
+    function delPrdtSchedule(Id) {
+
+        $.ajax({
+            method:'post',
+            url:'/api/user/delProduct',
+            dataType : 'json',
+            data:{prdtId:Id},
+            success: function(data) {
+                if(!data.status){
+                    return alert(data.msg)
+                }
+                window.location.href = '/instock';
+
+            },
+            error:function(request,status,error){
+            },
+            complete : function(data) {
+            }
+        });
+    }
+</script>
+</head>
+<body>
+  <% include ./nav %>
+  <%
+  function priceSet(param){
+  return param.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+}
+%>  
+<div class="feed">
+  <% for(var i=0; i < products.length; i++) { %>
+  <div class="container">
+    <div class="prodImg">
+      <div class="launch-time">
+        <div class="launch-caption">
+          <p class="headline-4"><%= products[i].month %>월</p>
+          <p class="headline-1"><%= products[i].day %></p>
+        </div>
+      </div>
+      <a href="/product/<%= products[i].id %>">
+        <img src="<%= products[i].img_url %>"/>
+        <div class="imgOverlay"></div>
+      </a>
+    </div>
+    <div class="prodInfo">
+      <span class="model"><%= products[i].prdt_cd %> / <%= priceSet(products[i].price ) %>원 / 
+        <% if(products[i].type === 'draw'){ %>
+        드로우
+        <% }else if(products[i].type === 'soon'){ %>
+        출시예정
+        <% }else{ %>
+        구매
+        <% } %>
+      </span>
+      <span class="collection"><%= products[i].title %>
+      </span>
+
+      <button onclick="delPrdtSchedule(<%= products[i].id %>)">삭제</button>
+
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<% include ./footer %>
+</body>
+</html>

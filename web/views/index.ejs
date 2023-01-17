@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>나이키. Just Do It. Nike.com</title>
+    <meta name="description" content="나이키_홈페이지">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <% include ./head %>
+
+<script>
+    function getToken(e) {
+        e.preventDefault()
+
+        $.ajax({
+            method:'POST',
+            url:'/api/user/getNewToken',
+            dataType : 'json',
+            success: function(data) {
+                if(!data.status){
+                    return alert(data.msg)
+                }
+                window.location.href = '/';
+
+            },
+            error:function(request,status,error){
+            },
+            complete : function(data) {
+            }
+        });
+    }
+
+    function copy_to_clipboard() {    
+        var copyText = '<%= token.id %>';
+        document.execCommand("Copy");
+        alert('복사완료');
+    }
+
+
+</script>
+
+</head>
+
+<body>
+  <% include ./nav %>
+  <div class="container">
+    <div id="top-header">
+      <div class="slide">
+        <p id="f1"> API 키 : <%= token.id %></p>
+        <p id="f2"> <u onclick="getToken(event)">API 키 발급요청 </u></p>
+      </div>
+
+    </div>
+
+    <div id="video">
+     
+      </div>
+
+
+    <div id="first-img">
+       <video id="first-img-id" width="1240" height="720" loop="loop" controls="controls" muted="muted" poster="video-cover.jpeg">
+        <source src="/Nike Membership. Nike IN.mp4" type="video/mp4">
+        </video>
+      <img src="/img/head1.jpg" id="first-img-id">
+    </div>
+
+    <!--
+      <div id="content">
+        <div class="heading-1">
+          Nike
+        </div>
+      <div class="heading-2">
+        OH HEY - NEW FRONT-ZIP
+      </div>
+      <div class="heading-0">
+        With an easy front-zip design, everything you need is front ans center.
+      </div>
+      <div> <button class="btn">Shop</button></div>
+    </div>
+  -->
+  </div>
+
+
+  <% include ./footer %>
+</body>
+</html>
