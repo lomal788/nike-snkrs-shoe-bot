@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>나이키. Just Do It. Nike.com</title>
+    <meta name="description" content="나이키_홈페이지">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" href="/css/product.css">
+    <% include ./head %>
+
+    <style type="text/css">
+    .select-box {
+      vertical-align: top;
+      font-size: 0.875em;
+    }
+    .select-box.width-max {
+      width: 100%;
+    }
+    .select-box {
+      position: relative;
+      display: inline-block;
+      width: 100px;
+      cursor: pointer;
+    }
+    .select-box .select-head:after {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      -webkit-transform: translateY(-50%);
+      right: 0;
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      content: '';
+      margin-right: 12px;
+      margin-left: 12px;
+      background-image: url(/img/below_img.svg);
+      background-repeat: no-repeat;
+      transition: transform 0.25s ease-in-out 0s;
+      -webkit-transition: transform 0.25s ease-in-out 0s;
+    }
+
+    .select-box.checked .select-head:after {
+      transform: rotate(180deg) translateY(50%);
+      -webkit-transform: rotate(180deg) translateY(50%);
+      transition: transform 0.25s ease-in-out 0s;
+      -webkit-transition: transform 0.25s ease-in-out 0s;
+    }
+    .select-box .select-head:after {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      -webkit-transform: translateY(-50%);
+      right: 0;
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      content: '';
+      margin-right: 12px;
+      margin-left: 12px;
+      background-image: url(/img/below_img.svg);
+      background-repeat: no-repeat;
+      transition: transform 0.25s ease-in-out 0s;
+      -webkit-transition: transform 0.25s ease-in-out 0s;
+    }
+
+    .select-box .select-head {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #d1d1d1;
+      color: #383838;
+      text-align: center;
+      width: 100%;
+      padding: 18px 24px;
+      border-radius: 4px;
+      line-height: 1.0;
+      z-index: 2;
+    }
+    .select-box a {
+      text-decoration: none;
+      outline: none;
+    }
+
+    .select-box.checked a.select-head {
+      border: 1px solid rgba(0, 0, 0, 0.75);
+    }
+
+    .select-box .select-body .list {
+      text-align: center;
+    }
+
+    .select-box .select-body .list .label {
+      display: block;
+      padding: 10px 8px;
+      color: #383838;
+    }
+
+    .select-box .select-body .list:hover {
+      background-color: #f7f7f7;
+    }
+
+    .select-box .select-body .list.checked {
+      background-color: #39f;
+    }
+
+    .select-box .select-body .list.checked .label {
+      color: #fff;
+    }
+
+    .select-box .select-body .list.disabled {
+      background-color: #ebebeb;
+    }
+
+    .select-box .select-body .list.disabled .label {
+      color: #999999;
+    }
+
+
+    .select-box .select-body {
+      text-indent: -9999px;
+      position: absolute;
+      left: -9999px;
+      width: 100%;
+      box-sizing: border-box;
+      overflow-y: auto;
+      margin-top: -1px;
+      max-height: 180px;
+      border: 1px solid #d1d1d1;
+      background: #ffffff;
+      z-index: 99;
+      text-align: left;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .select-box.checked a.select-head {
+      border: 1px solid rgba(0, 0, 0, 0.75);
+    }
+
+    .select-box.checked .select-body {
+      text-indent: 0;
+      left: 0;
+    }
+
+    .select-box a {
+      text-decoration: none;
+      outline: none;
+    }
+
+    .select-box #selectSize {
+      display: inline-block;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #d1d1d1;
+      color: #383838;
+      width: 100%;
+      padding: 18px 24px;
+      border-radius: 4px;
+      line-height: 1.0;
+      text-align: center;
+      background-image: url(/img/below_img.svg);
+      background-size: 24px 24px;
+      background-position: 95% 50%;
+      background-repeat: no-repeat;
+    }
+
+    .select-box.pc > select {
+      overflow: hidden;
+      position: absolute;
+      left: -9999px;
+      text-ident: -9999px;
+      opacity: 0;
+      filter: alpha(opacity=0);
+    }
+
+    </style>
+
+    <script type="text/javascript">
+      $( document ).ready( function() {
+        $('.select-head').click( function() {
+          $('#select-container').toggleClass( 'checked' );
+        });
+
+        $('#select-container .select-body li').click( function() {
+          var selectText = $(this).find('.label').text()
+          $('.currentOpt').text(selectText)
+          $("#selectSize").val(selectText).attr("selected", "selected");
+
+          
+          $('#select-container .select-body li').removeClass( 'checked' );
+          $(this).addClass('checked')
+          
+          $('#select-container').removeClass( 'checked' );
+        });
+
+        $('#prdt_submit').click( function() {
+          let size = $("#selectSize option:selected").val();
+          let cronId = <% if(product.cronid){ %><%= product.cronid %><% }else{ %>-1<% } %>;
+          let prdtId = <%= product.id %>;
+
+          if(size === '') return alert('사이즈를 선택해주세요.')
+
+          $.ajax({
+            method:'POST',
+            url:'/api/user/product-cron',
+            dataType : 'json',
+            data:{
+              size, prdtId, cronId
+            },
+            success: function(result) {
+              location.reload();
+              return;
+            },
+            error:function(request,status,error){
+            },
+            complete : function(data) {
+            }
+          });
+
+        });
+
+
+        //
+        //$("#selectboxID option:selected").text();
+
+      } );
+
+    </script>
+</head>
+<body>
+<%
+    function priceSet(param){
+    return param.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+%>  
+  <% include ./nav %>
+    <div class="container">
+      <div class="wrapper">
+        <div class="gallery">
+          <img src="<%= product.img_url %>"/>
+          <img src="<%= product.img_url %>"/>
+          <img src="<%= product.img_url %>"/>
+          <img src="<%= product.img_url %>"/>
+        </div>
+        <div class="info">
+          <div class="prodInfo">
+            <p class="model">
+              <%= product.prdt_cd %>
+            </p>
+            <p class="name">
+              <%= product.title %><br/>
+              <span style="font-size:24px;">
+                <%= product.theme %>
+              </span>
+            </p>
+            <p class="price"><%= priceSet(product.price) %> 원</p>
+            <div class="description">
+              <p>
+                <%= product.msg %>
+              </p>
+              <p>
+                <a href="https://www.nike.com/<%= product.prdt_url %>">
+              SNKRS 이동
+              </a>
+              </p>
+              <% if(product.cronid){ %>
+              <p>
+                사이즈 : <%= product.cronsize %>
+              </p>
+              <% } %>
+            </div>
+
+            <div id="select-container" class="select-box width-max pc rendered" data-brz-components-type="SIZE" data-component-select="{changeType:step,icon:brz-icon-opt-select_down,required:true}" data-attribute-name="FW_SIZE">
+              <a id="select-head" class="select-head">
+                <span class="currentOpt">사이즈 선택</span>
+              </a>
+              <ul class="select-body">
+                <li class="list checked">
+                  <span class="label">사이즈 선택</span>
+                </li>
+                <li class="list">
+                  <span class="label">240</span>
+                </li>
+                <li class="list">
+                  <span class="label">245</span>
+                </li>
+                <li class="list">
+                  <span class="label">250</span>
+                </li>
+                <li class="list">
+                  <span class="label">255</span>
+                </li>
+                <li class="list">
+                  <span class="label">260</span>
+                </li>
+                <li class="list">
+                  <span class="label">265</span>
+                </li>
+                <li class="list">
+                  <span class="label">270</span>
+                </li>
+                <li class="list">
+                  <span class="label">275</span>
+                </li>
+                <li class="list">
+                  <span class="label">280</span>
+                </li>
+                <li class="list">
+                  <span class="label">285</span>
+                </li>
+                <li class="list">
+                  <span class="label">290</span>
+                </li>
+                <li class="list">
+                  <span class="label">295</span>
+                </li>
+                <li class="list">
+                  <span class="label">300</span>
+                </li>
+              </ul>
+
+              <select id="selectSize" name="SIZE">
+                <option value="">사이즈 선택</option>
+                <option value="240">240</option>
+                <option value="245">245</option>
+                <option value="250">250</option>
+                <option value="255">255</option>
+                <option value="260">260</option>
+                <option value="265">265</option>
+                <option value="270">270</option>
+                <option value="275">275</option>
+                <option value="280">280</option>
+                <option value="285">285</option>
+                <option value="290">290</option>
+                <option value="295">295</option>
+                <option value="300">300</option>
+              </select>
+            </div>
+            <button id="prdt_submit">
+              <%= product.type %> <% if(product.cronid){ %>
+              업데이트
+              <% }else{ %>
+              예약
+              <% } %>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="wrapper">
+        <div class="wideGallery">
+          <!--
+          <img src="https://static-breeze.nike.co.kr/kr/ko_kr/cmsstatic/product/DQ4650-847/7d5d58bf-176e-4bf9-ae9b-d1006dc70bce_primary.jpg?snkrBrowse" />
+        -->
+        </div>
+      </div>
+    </div>
+
+  <% include ./footer %>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>나이키. Just Do It. Nike.com</title>
+    <meta name="description" content="나이키_홈페이지">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" href="/css/login.css">
+    <% include ./head %>
+
+<script>
+
+    let flag;
+
+    function signin(e) {
+        e.preventDefault()
+
+        var id = $("#email").val(),
+        pw = $("#password").val(),
+        remember = $("#cheak").val();
+
+        if(!id || !pw) return alert('ID또는 PW를 입력해주세요.')
+
+        $.ajax({
+            method:'POST',
+            url:'/login',
+            dataType : 'json',
+            data:{username:id,password:pw,remember:remember},
+            success: function(data) {
+                if(!data.status){
+                    return alert(data.msg)
+                }
+                window.location.href = '/';
+
+            },
+            error:function(request,status,error){
+            },
+            complete : function(data) {
+            }
+        });
+
+    }
+
+</script>
+</head>
+
+<body>
+  <% include ./nav %>
+
+    <div id="container">
+        <div class="container1">
+            <div class="card">
+                <div class="inner-box">
+                    <div class="card-front">
+                        <img id="logo" src="/img/nike-logo.png">
+                        <h1>Your Account For <br>Everything Nike</h1>
+                        <form action="" class="myform" id="form">
+                            <input type="email" id="email" class="input-box" placeholder="Your Email ID" required onKeyDown="if(event.keyCode==13) signin(event);">
+                            <input type="password" id="password" class="input-box" placeholder="Password" required onKeyDown="if(event.keyCode==13) signin(event);">
+                        </form>
+                        <input type="checkbox" id="cheak"><span class="span-text">Keep me signed in</span>
+                        <u id="anchor1">Forgotten your password?</u>
+                        <!--
+                        <a id="anchor1" href="">Forgotten your password?</a>
+                        -->
+                        <p class="text">By logging in, you agree to Nike's <u>Privacy Policy.</u> and <u>Terms of
+                                Use</u>
+                        </p>
+                        <button onclick="signin(event)" type="submit" class="submit-btn">SIGN IN</button>
+                        <!--
+                        <p class="text1"> Not a Member? <u>Join Us</u> </p>
+                    -->
+                    </div>
+                    <!-- ----------------------------------------------------- -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+<% include ./footer %>
+</body>
+</html>
